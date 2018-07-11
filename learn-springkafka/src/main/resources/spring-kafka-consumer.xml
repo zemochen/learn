@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:kafka.properties" />
+
+
+
+    <!-- 创建consumerFactory bean -->
+    <!--<bean id="consumerFactory" class="org.springframework.kafka.core.DefaultKafkaConsumerFactory">
+        <constructor-arg>
+            <ref bean="consumerProperties"/>
+        </constructor-arg>
+    </bean>-->
+
+    <!-- 实际执行消息消费的类 -->
+    <bean id="listener" class="org.zemo.kafka.spring.consumer.KafkaConsumer"/>
+
+    <!-- 消费者容器配置信息 -->
+    <bean id="containerProperties" class="org.springframework.kafka.listener.config.ContainerProperties" >
+        <constructor-arg name="topics">
+            <list>
+                <value>hotel_sync_fullinfo_from_fisv2</value>
+                <value>hotel_stock</value>
+            </list>
+        </constructor-arg>
+        <property name="messageListener" ref="listener"/>
+
+    </bean>
+
+    <!-- 创建kafkatemplate bean，使用的时候，只需要注入这个bean，即可使用template的send消息方法 -->
+    <!--<bean id="messageListenerContainer" class="org.springframework.kafka.listener.KafkaMessageListenerContainer" init-method="doStart">
+        <constructor-arg ref="kafkaListenerContainerFactory"/>
+        <constructor-arg ref="containerProperties"/>
+    </bean>-->
+
+    <bean id="kafkaListenerContainerFactory" class="org.springframework.kafka.core.DefaultKafkaConsumerFactory">
+        <constructor-arg name="configs" ref="consumerProperties"/>
+        <constructor-arg name="keyDeserializer" ref="kafkaDecoder"/>
+        <constructor-arg name="valueDeserializer" ref="kafkaDecoder"/>
+    </bean>
+
+    <!-- 定义consumer的参数 -->
+    <bean id="consumerProperties" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="bootstrap.servers" value="${bootstrap.servers}"/>
+                <!--<entry key="zookeeper.connect" value="${zookeeper.server}"/>-->
+                <entry key="group.id" value="${group.id}"/>
+                <entry key="enable.auto.commit" value="${enable.auto.commit}"/>
+                <entry key="auto.commit.interval.ms" value="${auto.commit.interval.ms}"/>
+                <entry key="session.timeout.ms" value="${session.timeout.ms}"/>
+                <entry key="key.deserializer" value="${key.deserializer}"/>
+                <entry key="value.deserializer" value="${value.deserializer}"/>
+            </map>
+        </constructor-arg>
+    </bean>
+    <bean id="kafkaDecoder" class="org.apache.kafka.common.serialization.StringDeserializer"/>
+</beans>

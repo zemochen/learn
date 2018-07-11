@@ -1,0 +1,32 @@
+<!--指定xml文档的根元素为beans，beans里面可以有多个子元素bean，仿照spring -->
+<!ELEMENT beans ( bean* )>
+    <!--指定根元素beans的两个属性，一个是延迟加载，一个是自动装配，默认为后面的值 -->
+    <!ATTLIST beans default-lazy-init (true|false)"false">
+    <!ATTLIST beans default-autowire (no|byName)"no">
+    <!-- 指定bean元素的子元素 -->
+    <!ELEMENT bean ((constructor-arg | property)*)>
+        <!-- 指定bean元素的属性值 ，这些属性和spring里面的类似-->
+        <!ATTLIST bean id CDATA #REQUIRED>
+        <!ATTLIST bean class CDATA #REQUIRED>
+        <!ATTLIST bean lazy-init (true|false|default) "default">
+        <!ATTLIST bean singleton (true|false) "true">
+        <!ATTLIST bean autowire (no|byName|default) "default">
+
+        <!-- 声明constructor-arg子元素 -->
+        <!ELEMENT constructor-arg ( (ref | value) )>
+        <!-- 声明property元素的子元素 -->
+        <!ELEMENT property ( (ref | value |collection)? )>
+            <!-- 指定collection元素的子元素 -->
+            <!ELEMENT collection ( (ref | value )+ )>
+            <!--声明collection的属性 -->
+            <!ATTLIST collection type CDATA #REQUIRED>
+            <!-- 声明property的属性 -->
+            <!ATTLIST property name CDATA #REQUIRED>
+            <!-- 声明ref元素 -->
+            <!ELEMENT ref EMPTY>
+                <!-- 声明ref的属性 -->
+                <!ATTLIST ref bean CDATA #REQUIRED>
+            <!-- 声明value元素 -->
+            <!ELEMENT value (#PCDATA)>
+                <!-- 声明value的属性 -->
+                <!ATTLIST value type CDATA #REQUIRED>

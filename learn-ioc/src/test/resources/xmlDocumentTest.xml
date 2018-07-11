@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//RONGDI//DTD BEAN//CN"
+        "http://zemochen.github.com/ioc/beans.dtd">
+<beans>
+    <bean id="test" class="test"></bean>
+</beans>
