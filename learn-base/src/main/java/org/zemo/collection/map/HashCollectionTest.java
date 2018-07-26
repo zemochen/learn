@@ -24,14 +24,14 @@ public class HashCollectionTest {
 //        Collections.synchronizedMap(map);
         Thread t = new Thread(new Runnable() {
             public void run() {
-                for (int i = 0; i < 10000; i++) {
+                for (int i = 0; i < 100000; i++) {
                     new Thread(new Runnable() {
                         public void run() {
                             //去掉同步锁，会造成死锁
-                            synchronized (map){
+//                            synchronized (map){
 
                                 map.put(UUID.randomUUID().toString(), "");
-                            }
+//                            }
                         }
                     }, "ftf" + i).start();
                 }

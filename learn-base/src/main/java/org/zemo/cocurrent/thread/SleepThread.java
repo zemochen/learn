@@ -18,8 +18,8 @@ public class SleepThread implements Runnable {
              * sleep 不会释放锁，依然持有锁
              * wait 会释放锁，让出资源
              */
-//            Thread.sleep(2000);
-            this.wait(2000);
+            Thread.sleep(2000);
+//            this.wait(2000);
             number += 100;
             System.out.println("first:" + number);
         }

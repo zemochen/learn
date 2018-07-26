@@ -28,7 +28,7 @@ public class SleepInterrupt implements Runnable {
         t.start();
         //主线程休眠2秒，从而确保刚才启动的线程有机会执行一段时间
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         }catch(InterruptedException e){
             e.printStackTrace();
         }
@@ -36,5 +36,11 @@ public class SleepInterrupt implements Runnable {
         //中断线程t
         t.interrupt();
         System.out.println("in main() - leaving");
+
+        try {
+            Thread.sleep(200000);
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }
