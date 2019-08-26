@@ -30,6 +30,7 @@
         <module>learn-ioc</module>
         <module>learn-zookeeper</module>
         <module>learn-thrift</module>
+        <module>learn-webflux</module>
     </modules>
 
     <dependencyManagement>
